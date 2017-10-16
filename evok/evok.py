@@ -104,11 +104,16 @@ class WhHandler():
 		registered_ws["all"].add(self)
 	
 	def on_event(self, device):
-		if devtype_names[device.devtype] in self.allowed_types:
+		dev_all = device.full()
+		outp = []
+		for single_dev in dev_all:
+			if single_dev['dev'] in self.allowed_types:
+				outp += single_dev
+		if len(outp) > 0:
 			if not self.complex_events:
 				self.http_client.fetch(self.url,method="GET")
 			else:
-				self.http_client.fetch(self.url,method="POST",body=json.dumps(device.full()))
+				self.http_client.fetch(self.url,method="POST",body=json.dumps(outp))
 
 
 class WsHandler(websocket.WebSocketHandler):
