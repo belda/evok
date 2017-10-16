@@ -394,6 +394,7 @@ enable_ic2
 
 cp -r etc/modprobe.d /etc/
 cp -r etc/opt /etc/
+mkdir -p /var/evok
 
 apt-get update
 apt-get install -y python-ow python-pip make python-dev nginx
