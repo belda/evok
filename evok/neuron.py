@@ -73,7 +73,7 @@ class ModbusCacheMap(object):
 						for index in range(m_reg_group['count']):
 							if (m_reg_group['start_reg'] + index) in self.neuron.datadeps and self.registered[(m_reg_group['start_reg'] + index)] != val.registers[index]:
 								for ddep in self.neuron.datadeps[m_reg_group['start_reg'] + index]:
-									if not ((isinstance(ddep, Input) or isinstance(ddep, ULED)) and not ddep.value_delta(val.registers[index])):
+									if not (((isinstance(ddep, Input) or isinstance(ddep, ULED))) and not ddep.value_delta(val.registers[index])):
 										changeset += [ddep]
 							self.registered[(m_reg_group['start_reg'] + index)] = val.registers[index]
 							self.frequency[m_reg_group['start_reg']] = 1
