@@ -105,8 +105,8 @@ class WhHandler():
 	
 	def on_event(self, device):
 		if devtype_names[device.devtype] in self.allowed_types:
-			if self.complex_events:
-				self.http_client.fetch(self.url)
+			if not self.complex_events:
+				self.http_client.fetch(self.url,method="GET")
 			else:
 				self.http_client.fetch(self.url,method="POST",body=json.dumps(device.full()))
 
