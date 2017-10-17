@@ -1671,20 +1671,20 @@ class AnalogInput():
 		self.unit_name = unit_names[VOLT]
 		self.sec_ai_mode = 0
 		if circuit != '1_01':
-			self.sec_ai_mode = self.arm.neuron.modbus_cache_map.get_register(1, self.valreg, unit=self.arm.modbus_address)[0]
+			self.sec_ai_mode = self.arm.neuron.modbus_cache_map.get_register(1, self.regmode, unit=self.arm.modbus_address)[0]
 			if self.sec_ai_mode != 0  and self.sec_ai_mode != 1 and 'SecondaryAI' in self.modes:
 				self.mode = 'SecondaryAI'
 		self.major_group = major_group
 		self.is_voltage = lambda: True
 		if circuit == '1_01' and regcal >= 0:
-			self.is_voltage = lambda: bool(self.arm.neuron.modbus_cache_map.get_register(1, self.valreg, unit=self.arm.modbus_address)[0] == 0)
+			self.is_voltage = lambda: bool(self.arm.neuron.modbus_cache_map.get_register(1, self.regmode, unit=self.arm.modbus_address)[0] == 0)
 			if self.is_voltage():
 				self.mode = "Voltage"
 			else:
 				self.mode = "Current"
 				self.unit_name = unit_names[AMPERE]
 		elif circuit != '1_01':
-			self.is_voltage = lambda: not bool(self.arm.neuron.modbus_cache_map.get_register(1, self.valreg, unit=self.arm.modbus_address)[0] == 1)
+			self.is_voltage = lambda: not bool(self.arm.neuron.modbus_cache_map.get_register(1, self.regmode, unit=self.arm.modbus_address)[0] == 1)
 		self.reg_shift = 2 if self.is_voltage() else 0
 		if regcal >= 0:
 			self.vfactor = arm.volt_ref / 4095 * (1 + uint16_to_int(self.arm.neuron.modbus_cache_map.get_register(1, regcal + self.reg_shift + 1, unit=self.arm.modbus_address)[0]) / 10000.0)
